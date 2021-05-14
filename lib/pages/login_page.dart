@@ -4,11 +4,13 @@ import 'package:flutter_catalog/utils/routes.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
+
 }
 
 class _LoginPageState extends State<LoginPage> {
   String name = "";
   bool changeButton = false;
+   final _formkey = Globalkey<FormState>()
 
   get onChanged => null;
   @override
@@ -16,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
     return Material(
         color: Colors.white,
         child: SingleChildScrollView(
+          child: Form(
             child: Column(
           children: [
             Image.asset(
@@ -48,6 +51,14 @@ class _LoginPageState extends State<LoginPage> {
                       labelText: "password",
                     ),
                   ),
+                  validator:(value){
+                    if (value.isEmpty){
+                      return "password cannot be empty";
+                    }else if(value.length<6){
+                      return "password must be at least 6 characters";
+                    }
+                    return null;
+                   }
                   Text("welcome $name",
                       style: TextStyle(
                         fontSize: 22,
@@ -56,14 +67,22 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 40.0,
                   ),
+                  Material(
+                    color:Colors.deepPurple,
+                    borderRadius:
+                        BorderRadius.circular(changeButton?50:8),
                   inkwell()( 
                     onTap:() async {
                     setState()(
                    changeButton = true;
                     });
                     await Future.delayed(duration(seconds:1));
-                    Navigator.pushNamed(context,MyRoutes.homeRoute);
-                  ),
+
+                   await Navigator.pushNamed(context,MyRoutes.homeRoute);
+                   setState((){
+                     changeButton = false;
+                   });
+                  },
                  child:AnimatedContainer(
                    duration:Duration(seconds:1);
                   width:changeButton?50:150,
